@@ -15,7 +15,7 @@ This repository bundles the OCL Model Context Protocol (MCP) server together wit
 
 - Python 3.10+ (3.12 is used inside the Docker image) with access to the filesystem where the repo lives.
 - An optional OCL API token when you need access to private or organization-owned repositories.
-- Optional LLM provider credentials (for example, Anthropic) if you plan to use the UI’s chat experience.
+- Optional LLM provider credentials for Anthropic or OpenAI if you plan to use the UI’s chat experience.
 
 ## Configuration
 
@@ -27,7 +27,7 @@ Important variables:
 |---|---|
 | `OCL_TOKEN` | OCL API token (40 characters) for authenticated concept/mapping requests. |
 | `OCL_URL` | Override for the OCL base URL; `chat` defaults to production but allows `staging`, `local`, or any custom URL. |
-| `LM_PROVIDER` | Sets a default provider in the UI (defaults to `anthropic`). |
+| `LM_PROVIDER` | Sets a default provider in the UI. Supported values are `anthropic` and `openai` (defaults to `anthropic`). |
 | `LM_MODEL` | Preferred model name for the chat session. |
 | `LM_TOKEN` | API key for the chosen LLM provider (passed straight to the UI). |
 | `UI_HOST` / `UI_PORT` | Host and port for the FastAPI app (default `0.0.0.0:8002`). |
@@ -82,4 +82,3 @@ Compose loads `.env`, exposes port `8002`, and uses the healthcheck in `docker-c
 
 - See `mcp-server/README.md` for detailed MCP server usage, tooling, and available MCP endpoints.
 - `mcp-server/docs/` contains auxiliary guides (Claude configuration, examples, etc.).
-*** End Patch
