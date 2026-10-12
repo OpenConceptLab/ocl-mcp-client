@@ -1,7 +1,7 @@
 import os
 import json
 from typing import List, Optional, Dict, Any
-from fastapi import APIRouter, Request, Body
+from fastapi import APIRouter, Body, HTTPException, Request
 from fastapi.responses import RedirectResponse, JSONResponse
 from langchain_anthropic import ChatAnthropic
 from langchain_openai import ChatOpenAI
@@ -9,6 +9,7 @@ from langchain_core.tools import tool, StructuredTool
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage, ToolMessage
 
 from mcp import types as mcp_types
+from routes.providers import normalize_provider
 from web_config import templates
 from ocl_mcp.server import OCLMCPServer
 from ocl_mcp.tools import (
@@ -235,13 +236,16 @@ async def chat_message(request: Request, payload: dict = Body(...)):
 
     # Initialize LLM
     config_payload = payload.get("config", {})
-    provider = config_payload.get("provider") or os.getenv("LM_PROVIDER", "anthropic")
+    try:
+        provider = normalize_provider(config_payload.get("provider") or os.getenv("LM_PROVIDER"))
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
     model_name = config_payload.get("model") or os.getenv("LM_MODEL")
     api_key = config_payload.get("api_key") or os.getenv("LM_TOKEN")
 
     if provider == "openai":
         llm = ChatOpenAI(model=model_name or "gpt-4o", api_key=api_key)
-    else:
+    elif provider == "anthropic":
         llm = ChatAnthropic(model=model_name or "claude-3-5-sonnet-20241022", api_key=api_key)
 
     # Bind tools
