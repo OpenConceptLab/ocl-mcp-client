@@ -82,3 +82,7 @@ Compose loads `.env`, exposes port `8002`, and uses the healthcheck in `docker-c
 
 - See `mcp-server/README.md` for detailed MCP server usage, tooling, and available MCP endpoints.
 - `mcp-server/docs/` contains auxiliary guides (Claude configuration, examples, etc.).
+
+## The OCL Digital Public Good
+
+This repository is not part of the [OCL Digital Public Good](https://github.com/OpenConceptLab/.github/blob/main/DIGITAL-PUBLIC-GOOD.md). That page lists the repositories that are.
